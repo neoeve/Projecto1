@@ -1,6 +1,6 @@
 package search_algorithms;
 
-import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,31 +12,55 @@ public class BreadthFirst extends SearchAlgorithm{
 
 	private List<Edge> adjNodes;
 	private List<Node> nodePath;
-	private Node actualNode;
+	private List<Node> bestPath;
+	private Node nextNode;
+	private Edge atualEdge;
 	
-	Iterator<Node> nodeIter = null;  
+	ListIterator<Edge> edgeIter = null;  
 	
 	public BreadthFirst(Graph graph) {
 		super(graph);
-		nodePath = new LinkedList<Node>();
-		nodeIter = nodePath.listIterator(); 
+		nodePath = new LinkedList<Node>(); 
+		bestPath = new LinkedList<Node>(); 
 	}
 
 	@Override
 	public List<Node> start(Node n_initial, Node n_final) {
 		nodePath.add(n_initial);
+		bestPath.add(n_initial);
 		
-		while (nodeIter.hasNext()) {	
-			actualNode = nodeIter.next(); 
-			if (actualNode == n_final) {
-	 			break;
-	 		}
-			
-			adjNodes = adjacencyOfNode(actualNode);
-			
-			for (Edge edge : adjNodes) 
-				nodePath.add(edge.getN1());
+		search(nodePath,n_final);
+
+		return bestPath;
+	}
+	
+	public List<Node> search(List<Node> nodes, Node n_final) {
+		adjNodes = adjacencyOfNode(nextNode);
+		
+		if (adjNodes != null) {
+			nextNode = adjNodes.get(0).getN1();	
+			edgeIter = adjNodes.listIterator(adjNodes.size());
+		
+			while (edgeIter.hasPrevious()) {
+				atualEdge = edgeIter.previous();
+				
+				if (atualEdge.getN1() == n_final) {
+					bestPath.add(atualEdge.getN1());
+		 			return bestPath;
+		 		}
+				nodePath.add(atualEdge.getN1());
+			}	
+			bestPath.add(nextNode);
 		}
-		return nodePath;
+		else {
+			nodePath.remove(nextNode);
+			bestPath.remove(nextNode);
+			nextNode = nodePath.get(nodePath.size()-1);
+		}
+		
+ 		//Chamada recursiva com o node expandido
+		search(nodePath,n_final);
+		
+		return null;
 	}
 }

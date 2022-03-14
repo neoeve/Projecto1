@@ -57,6 +57,7 @@ public class Grafo {
 		dfsAlg.printResult(dfsAlg.startSearch(n6, n11));
 		
 		System.out.println("------------------BFS----------------------");
+		System.out.println("4 node path: " + adjacencyList.get(n3));
 		SearchAlgorithm bfsAlg = new BreadthFirst(graph);
 		dfsAlg.printResult(bfsAlg.startSearch(n6, n11));
 	}

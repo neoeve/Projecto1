@@ -11,13 +11,13 @@ public class DepthFirst extends SearchAlgorithm{
 
 	private List<Edge> adjNodes;
 	private List<Node> nodePath;
-	private List<Node> nodeSearch;
+	private List<Node> bestPath;
 	private Node lastNode;
 	
 	public DepthFirst(Graph graph) {
 		super(graph);
 		nodePath = new LinkedList<Node>();
-		nodeSearch = new LinkedList<Node>();
+		bestPath = new LinkedList<Node>();
 	}
 
 	@Override
@@ -28,20 +28,20 @@ public class DepthFirst extends SearchAlgorithm{
 		lastNode = n_initial;
 		
 		search(adjNodes, n_final);
-		return nodeSearch;
+		return bestPath;
 	}
 	
 	public List<Node> search(List<Edge> adjNodes, Node n_final) {
  		//Verificar se o node atual tem caminho
 		if (adjNodes != null) {
 			//caso tenha caminho verifica se o mesmo já foi aprofundado
- 			if (nodeSearch.contains(lastNode)) {
+ 			if (bestPath.contains(lastNode)) {
  				//se já foi, significa que é um beco sem saida
- 				nodeSearch.remove(lastNode);
+ 				bestPath.remove(lastNode);
  				nodePath.remove(lastNode);
  			}
  			else {
-				nodeSearch.add(lastNode);
+				bestPath.add(lastNode);
 	 			
 				//Adiciona a sua expansão à lista de caminhos a percorrer
 	 			for (Edge edge : adjNodes) 
@@ -57,8 +57,8 @@ public class DepthFirst extends SearchAlgorithm{
 		
  		//Caso o proximo node a aprofundar seja o objectivo, adiciona-o à lista de caminho ideal e devolve-a
 		if (lastNode == n_final) {
- 			nodeSearch.add(lastNode);
- 			return nodeSearch;
+ 			bestPath.add(lastNode);
+ 			return bestPath;
  		}
 		
  		//Chamada recursiva com o node expandido
