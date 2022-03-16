@@ -58,5 +58,9 @@ public class SolutionBreadthDepth {
 		System.out.println("------------------BFS----------------------");
 		SearchAlgorithm bfsAlg = new BreadthFirst(graph);
 		bfsAlg.printResult(bfsAlg.startSearch(n6, n11));	
+		
+		System.out.println("------------------DFS----------------------");
+		SearchAlgorithm dfsAlg = new DepthFirst(graph);
+		dfsAlg.printResult(dfsAlg.startSearch(n6, n11));
 	}
 }
