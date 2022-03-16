@@ -35,35 +35,42 @@ public class Astar extends SearchAlgorithm{
 	
 	public List<Node> search(List<Edge> adjNodes, Node n_final) {
 		f = 99999999;
+		//Verifica se há caminho a percorrer
 		if (adjNodes != null) {
+			//Verifica se o node atual já foi visitado
  			if (bestPath.contains(nextNode)) {
  				bestPath.remove(nextNode);
  				nodePath.remove(nextNode);
  			}
- 			else { 			
+ 			else {
+ 			//Senão foi visitado adiciona-o à lista de caminho ideal
  				bestPath.add(nextNode);
  				
+ 				//Para cada caminho possível vai calcular o seu custo
  				for (Edge edge : adjNodes) {
  					nextCost = edge.getCost() + edge.getN1().getHeuristic();
  			
+ 					//Caso o custo de destino seja inferior ao anteriormente apurado da lista, seleciona-o
  					if (nextCost < f) {
 	 					nextNode = edge.getN1();
 	 					f = nextCost;
 	 				}
+ 					//adiciona cada node à lista de caminhos
 		 			nodePath.add(edge.getN1());
 	 			}
  			}
  		}
 		else 
+		//Se não tem caminho a percorrer, retira o node da lista
 			nodePath.remove(nextNode);
 		
-		System.out.println("Next node: " + nextNode.getLabel());
-		
+		//Caso o proximo node a visitar seja o objectivo, adiciona-o à lista de caminho ideal e termina
 		if (nextNode == n_final) {
  			bestPath.add(nextNode);
  			return bestPath;
  		}
 
+		//Chamada recursiva com o caminho do proximo node
 		search(adjacencyOfNode(nextNode),n_final);
 		
 		return null;
